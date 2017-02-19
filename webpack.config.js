@@ -12,7 +12,7 @@ const paths = {
 
 module.exports = {
   context: paths.src,
-  entry: './app.ts',
+  entry: './index.ts',
   output: {
     filename: '[name].bundle.js',
     path: paths.dist,
@@ -29,16 +29,6 @@ module.exports = {
 
   // Add the loader for .ts files.
   module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        enforce: 'pre',
-        loader: 'tslint-loader',
-        options: {
-          tsConfigFile: './tslint.json',
-        }
-      }
-    ],
     loaders: [
       {
         test: /\.tsx?$/,

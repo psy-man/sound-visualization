@@ -13,12 +13,10 @@
     "sourceMap": false,
     "inlineSourceMap": true,
     "target": "es6",
-    "lib": [
-      "es2016"
-    ],
     "baseUrl": "",
     "typeRoots": [
-      "./node_modules/@types"
+      "./node_modules/@types",
+      "./typings/index.d.ts"
     ],
     "types": [
       "node"
