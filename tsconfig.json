@@ -4,9 +4,9 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": true,
-    "noImplicitAny": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
+    "noImplicitAny": false,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
     "outDir": "./dist",
     "rootDir": ".",
     "sourceRoot": "",
@@ -18,9 +18,15 @@
       "./node_modules/@types",
       "./typings/index.d.ts"
     ],
+    "lib": ["es2017", "dom"],
     "types": [
       "node"
     ]
+  },
+  "awesomeTypescriptLoaderOptions": {
+    "useWebpackText": true,
+    "forkChecker": true,
+    "useCache": true
   },
   "exclude": [
     "dist/**/*",
