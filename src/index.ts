@@ -9,6 +9,10 @@ const textureHelper = new TextureHelper;
 
 const app = new App(audioHelper, textureHelper);
 
-app.preload().then(([sound, textures]) => app.bootstrap(sound, textures));
+app.preload().then(([sound, textures]) => {
+  document.getElementById('loading').remove();
+
+  app.bootstrap(sound, textures)
+});
 
 
