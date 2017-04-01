@@ -7,7 +7,7 @@ const {CheckerPlugin} = require('awesome-typescript-loader');
 
 const paths = {
   src: path.resolve(__dirname, './src'),
-  dist: path.resolve(__dirname, './dist'),
+  dist: path.resolve(__dirname, './docs'),
   index: path.resolve(__dirname, './src/index.html')
 };
 
