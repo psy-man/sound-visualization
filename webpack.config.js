@@ -21,7 +21,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx', '.gif', '.scss']
+    extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
 
   devtool: 'source-map',
@@ -49,7 +49,7 @@ module.exports = {
         })
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
+        test: /\.(jpe?g|png|gif|svg|mp3)$/i,
         loaders: [
           'file-loader'
         ]
