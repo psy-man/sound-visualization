@@ -1,3 +1,4 @@
+import './index.scss';
 import App from './app/app';
 
 import AudioHelper from './app/helpers/audio';

@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const {CheckerPlugin} = require('awesome-typescript-loader');
 
@@ -19,23 +20,41 @@ module.exports = {
     publicPath: '/',
   },
 
-  // Currently we need to add '.ts' to the resolve.extensions array.
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx']
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.gif', '.scss']
   },
 
-  // Source maps support ('inline-source-map' also works)
   devtool: 'source-map',
 
-  // Add the loader for .ts files.
   module: {
+
+
     loaders: [
       {
         test: /\.tsx?$/,
         loader: 'awesome-typescript-loader'
-      }
+      },
+      {
+        test: /\.css$/,
+        loaders: ExtractTextPlugin.extract({
+          fallback: 'style-loader?sourceMap',
+          loader: 'css-loader?sourceMap'
+        })
+      },
+      {
+        test: /\.scss$/,
+        loaders: ExtractTextPlugin.extract({
+          fallback: 'style-loader?sourceMap',
+          loader: 'css-loader?sourceMap!sass-loader?sourceMap'
+        })
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loaders: [
+          'file-loader'
+        ]
+      },
     ],
-
   },
   plugins: [
     new CheckerPlugin(),
@@ -43,7 +62,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: paths.index
-    })
+    }),
+    new ExtractTextPlugin('styles.css')
   ],
 
   devServer: {

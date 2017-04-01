@@ -16,8 +16,8 @@ export default class AudioHelper {
     this.gainNode.connect(this.context.destination);
   }
 
-  public async loadSound(url: string) {
-    return await fetch(url)
+  public loadSound(url: string) {
+    return fetch(url)
       .then(res => res.arrayBuffer())
       .then(async buffer => await this.getBufferSource(buffer))
       .catch(error => console.error(error));

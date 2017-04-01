@@ -7,7 +7,7 @@ import TextureHelper from './helpers/texture';
 import Galaxy from './objects/galaxy';
 import Ring from './objects/ring';
 
-import Point from './interfaces/point';
+import {Point} from './interfaces/point';
 
 
 export default class App {
@@ -37,17 +37,16 @@ export default class App {
 
   private direction: number = 1;
 
-  constructor(public audio: AudioHelper, public texture: TextureHelper) {
-    this.WIDTH = window.innerWidth;
-    this.HEIGHT = window.innerHeight;
+  constructor(public audio: AudioHelper, public textures: TextureHelper) {
+    this.updateScreenResolution();
 
     this.frequencyData = new Uint8Array(audio.analyser.frequencyBinCount);
   }
 
-  async preload() {
+  preload() {
     const promises: Promise<any>[] = [
       this.audio.loadSound('/assets/music/simatics.mp3'),
-      this.texture.load([
+      this.textures.load([
         {id: 'earth', url: '/assets/images/world.jpg'},
         {id: 'galaxy', url: '/assets/images/starfield.png'}
       ])
@@ -60,9 +59,9 @@ export default class App {
     this.createScene();
     this.initEvents();
 
-    const earth = new Earth(textures[0].texture);
+    const earth = new Earth(textures.earth);
     const atmosphere = new Atmosphere(earth.getGeometry());
-    const galaxy = new Galaxy(textures[1].texture);
+    const galaxy = new Galaxy(textures.galaxy);
 
     this.addObject('earth', earth);
     this.addObject('atmosphere', atmosphere);
@@ -74,11 +73,8 @@ export default class App {
 
     this.render();
 
-    setTimeout(() => {
-      sound.start(0, 0);
-    },1000);
+    sound.start(0, 0)
   }
-
 
   render() {
     requestAnimationFrame(() => {
@@ -96,8 +92,6 @@ export default class App {
 
     this.rotation.y += (this.target.y - this.rotation.y) * 0.15 + this.frequencyData[this.frequencyData.length - this.frequencyData.length / 2] / 1500 * this.direction;
 
-    // console.log(this.rotation.y);
-
     this.distance += (this.distanceTarget - this.distance) * 0.3;
 
     this.camera.position.x = this.distance * Math.sin(this.rotation.x) * Math.cos(this.rotation.y);
@@ -111,12 +105,10 @@ export default class App {
     this.renderer.render(this.scene, this.camera);
   }
 
-
   addObject(id, mesh) {
     this.objects[id] = mesh;
     this.scene.add(mesh.getMesh());
   }
-
 
   private createScene() {
     this.scene = new THREE.Scene();
@@ -130,7 +122,6 @@ export default class App {
     document.body.appendChild(this.renderer.domElement);
   }
 
-
   private zoom(delta) {
     this.distanceTarget -= delta;
 
@@ -138,12 +129,12 @@ export default class App {
     this.distanceTarget = this.distanceTarget < 350 ? 350 : this.distanceTarget;
   }
 
-
   private initEvents() {
     document.body.addEventListener('mousedown', this.onMouseDown.bind(this), false);
     document.body.addEventListener('mousewheel', this.onMouseWheel.bind(this), false);
-  }
 
+    window.addEventListener( 'resize', this.onWindowResize.bind(this), false );
+  }
 
   private onMouseDown(event) {
     event.preventDefault();
@@ -181,10 +172,23 @@ export default class App {
     document.body.style.cursor = 'move';
   }
 
-
   private onMouseWheel(event) {
     event.preventDefault();
     this.zoom(event.wheelDeltaY * 0.3);
     return false;
+  }
+
+  private updateScreenResolution() {
+    this.WIDTH = window.innerWidth;
+    this.HEIGHT = window.innerHeight;
+  }
+
+  private onWindowResize() {
+    this.updateScreenResolution();
+
+    this.camera.aspect = this.WIDTH / this.HEIGHT;
+    this.camera.updateProjectionMatrix();
+
+    this.renderer.setSize(this.WIDTH, this.HEIGHT);
   }
 }

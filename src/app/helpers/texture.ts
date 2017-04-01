@@ -8,10 +8,17 @@ export default class TextureHelper {
     this.loader.crossOrigin = 'true';
   }
 
-  load(urlList) {
-    return Promise.all(
-      urlList.map(async texture => await this.loadTextureAsync(texture))
-    )
+  async load(urlList) {
+    const textures = {};
+
+    const promises = urlList.map(texture => this.loadTextureAsync(texture));
+    const response: any = await Promise.all(promises);
+
+    for (const {id, texture} of response) {
+      textures[id] = texture;
+    }
+
+    return textures;
   }
 
   private loadTextureAsync(item) {
