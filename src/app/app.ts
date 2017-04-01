@@ -45,10 +45,10 @@ export default class App {
 
   preload() {
     const promises: Promise<any>[] = [
-      this.audio.loadSound('/assets/music/simatics.mp3'),
+      this.audio.loadSound('assets/music/simatics.mp3'),
       this.textures.load([
-        {id: 'earth', url: '/assets/images/world.jpg'},
-        {id: 'galaxy', url: '/assets/images/starfield.png'}
+        {id: 'earth', url: 'assets/images/world.jpg'},
+        {id: 'galaxy', url: 'assets/images/starfield.png'}
       ])
     ];
 
